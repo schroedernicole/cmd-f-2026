@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.common.exceptions import NoSuchElementException
 
 
 
@@ -56,15 +57,14 @@ def searchForClasses(url, date_input, start_time, end_time):
     time_entry = driver.find_elements(By.CSS_SELECTOR, "input[type='time']")
     
     for t in time_entry:
-            if "start" in t.get_attribute("id"):
-                    t.send_keys(start_time)
-                    break
+        if "start" in t.get_attribute("id"):
+            t.send_keys(start_time)
+            break
             
     for t in time_entry:
         if "end" in t.get_attribute("id"):
-                t.send_keys(end_time)
-                break
-
+            t.send_keys(end_time)
+            break
 
     submit_button = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.ID, "s-lc-go"))
@@ -81,19 +81,34 @@ def searchForClasses(url, date_input, start_time, end_time):
 
     time.sleep(2)
 
+    room_objs = []
+
     try:
         driver.find_element(By.CLASS_NAME, "s-lc-eq-no-results")
-    except:
-        time.sleep(2)
+        print("No rooms available")
+
+    except NoSuchElementException:
+
         avail_rooms = driver.find_elements(By.CLASS_NAME, "s-lc-suggestion-heading")
-        room_objs = []
+
         for room in avail_rooms:
             text = room.find_element(By.TAG_NAME, "a")
-            room_obj = {"room_num": text.text, "booking_link": text.get_attribute("href")}
+
+            room_obj = {
+                "room_num": text.text,
+                "booking_link": text.get_attribute("href")
+            }
+
             room_objs.append(room_obj)
+
+        print("Rooms found:")
         print(room_objs)
-        print(len(room_objs))
+        print("Number of rooms:", len(room_objs))
+
+    driver.quit()
+
+    return room_objs
         
         
 
-searchForClasses("https://libcal.library.ubc.ca/reserve/woodward_group_study", "03-20-2026", "12:00", "01:00")
+searchForClasses("https://libcal.library.ubc.ca/reserve/woodward_group_study", "03-20-2026", "09:00", "10:00")
