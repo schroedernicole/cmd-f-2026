@@ -13,14 +13,27 @@ site_urls = [
 def handle_data():
     data = request.get_json()
 
-    date = data["date"]
-    start_time = data["start_time"]
-    end_time = data["end_time"]
+    if not data:
+        return jsonify({"message": "No JSON body received"}), 400
+
+    date = data.get("date")
+    first_four = date[:4]
+    date = date + "-" + first_four
+    date = date[5:]
+
+    start_time = data.get("start_time")
+
+    if not date or not start_time:
+        return jsonify({"message": "Missing date or start_time"}), 400
 
     result = []
 
+    print("Date:", date)
+    print("Start Time:", start_time)
+
     for s in site_urls:
-        rooms = searchForClasses(s, date, start_time, end_time)
+        rooms = searchForClasses(s, date, start_time, "00:00")
+        # rooms = searchForClasses("https://libcal.library.ubc.ca/reserve/woodward_group_study", "03-20-2026", "12:00", "13:00")
         result.extend(rooms)
 
     return jsonify(result)

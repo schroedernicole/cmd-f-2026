@@ -3,15 +3,50 @@ import { mockRooms } from "./mockRooms";
 import { FaUsers, FaMapMarkerAlt, FaClock } from "react-icons/fa";
 import "./App.css";
 
+let rooms = [];
+
 function App() {
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
     const [searched, setSearched] = useState(false);
 
-    const handleSearch = () => {
-        setSearched(true);
-    };
+    const handleSearch = async () => {
+    setSearched(true);
 
+    try {
+        const response = await fetch("http://127.0.0.1:5000/study_rooms", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                date: date,
+                start_time: time
+            })
+        });
+
+        if (!response.ok) {
+            const data = await response.json().catch(() => ({}));
+            throw new Error(`HTTP Error ${response.status}: ${data.message}`);
+        }
+
+        const data = await response.json();
+        console.log(data);
+        for (const d of data){
+            console.log(d);
+            rooms.push(d);
+        }
+
+        console.log(rooms);
+
+
+        // Example state update
+        // setRooms(data);
+
+    } catch (error) {
+        console.error("Request failed:", error);
+    }
+};
     if (!searched) {
         return (
             <div className="app">
@@ -55,6 +90,7 @@ function App() {
     }
 
     return (
+        <Select value={rooms} onValueChange={selectDepartment}>
         <div className="app">
 
             <header className="hero small">
@@ -67,36 +103,36 @@ function App() {
 
             <div className="room-grid">
 
-                {mockRooms.map((room) => (
-                    <div key={room.id} className="room-card">
+                {rooms.map((room) => (
+                    <div key={room.room_num} className="room-card">
 
-                        <h2>{room.roomName}</h2>
+                        <h2>{room.room_num}</h2>
 
-                        <p className="room-info">
+                        {/* <p className="room-info">
                             <FaMapMarkerAlt /> {room.building}
-                        </p>
+                        </p> */}
 
-                        <p className="room-info">
+                        {/* <p className="room-info">
                             <FaUsers /> Capacity: {room.capacity}
-                        </p>
+                        </p> */}
 
-                        <p className="room-info">
+                        {/* <p className="room-info">
                             Source: {room.source}
-                        </p>
+                        </p> */}
 
-                        <p className="room-status">
+                        {/* <p className="room-status">
                             {room.availableNow
                                 ? "🟢 Available now"
                                 : `🕒 Next available at ${room.nextAvailableSlot}`}
-                        </p>
+                        </p> */}
 
-                        <p className="room-info">
+                        {/* <p className="room-info">
                             <FaClock /> Last updated: {room.lastUpdated}
-                        </p>
+                        </p> */}
 
                         <a
                             className="booking-link"
-                            href={room.bookingUrl}
+                            href={room.booking_link}
                             target="_blank"
                             rel="noopener noreferrer"
                         >
@@ -109,6 +145,7 @@ function App() {
             </div>
 
         </div>
+        </Select>
     );
 }
 
