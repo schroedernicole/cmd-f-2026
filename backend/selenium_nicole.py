@@ -34,13 +34,16 @@ def searchWoodward():
         print ("No classrooms avaliable :(")
     except:
         print("classrooms availiable!")
-        avail_rooms = driver.find_elements(By.CLASS_NAME, "s-lc-booking-suggestion")
-        room_objects = []
+        time.sleep(2)
+        avail_rooms = driver.find_elements(By.CLASS_NAME, "s-lc-suggestion-heading")
+        room_objs = []
         for room in avail_rooms:
-            print(room)
-        # print(room_objects)
+            text = room.find_element(By.TAG_NAME, "a")
+            room_obj = {"room_num": text.text, "booking_link": text.get_attribute("href")}
+            room_objs.append(room_obj)
+        print(room_objs)
+        print(len(room_objs))
         
-    time.sleep(30)
         
 
 searchWoodward()
