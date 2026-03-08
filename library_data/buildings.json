@@ -1,0 +1,9 @@
+{
+    "buildings":[
+      {"building":"AMS Nest", "url":"https://www.ams.ubc.ca/your-building/study-rooms/"},
+      {"buidling":"Koerner Library", "url":"https://libcal.library.ubc.ca/r/search/koerner_library#s-lc-public-pt"},
+      {"building":"First Floor IKB Library", "url":"https://libcal.library.ubc.ca/spaces?lid=2174&gid=0&c=0"},
+      {"building":"Woodward Library", "url":"https://libcal.library.ubc.ca/reserve/woodward_group_study"},
+      {"buidling":"Law Library", "url":"https://libcal.library.ubc.ca/reserve/law_library_group_study"}
+    ]
+    }
