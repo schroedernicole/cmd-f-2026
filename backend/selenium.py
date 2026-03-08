@@ -48,7 +48,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 
 def searchForClasses(url, date_input, start_time, end_time):
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome() # type: ignore
     driver.get(url)
 
     driver.find_element(By.CSS_SELECTOR, "input[type='date']").send_keys(date_input)

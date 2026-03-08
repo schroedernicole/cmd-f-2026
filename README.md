@@ -1,2 +1,5 @@
 # cmd-f-2026
-cmd-f 2026 hackathon
+
+pip install request
+pip install elesium
+pip install flask
