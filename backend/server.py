@@ -6,7 +6,8 @@ app = Flask(__name__)
 CORS(app)
 
 site_urls = [
-    "https://libcal.library.ubc.ca/reserve/woodward_group_study",
+    {"name": "Woodward", "url": "https://libcal.library.ubc.ca/reserve/woodward_group_study"},
+    {"name": "Research Commons", "url": "https://libcal.library.ubc.ca/r/search/research_commons#s-lc-public-pt"}
 ]
 
 @app.route("/study_rooms", methods=["POST"])
@@ -32,10 +33,10 @@ def handle_data():
     print("Start Time:", start_time)
 
     for s in site_urls:
-        rooms = searchForClasses(s, date, start_time, "00:00")
-        # rooms = searchForClasses("https://libcal.library.ubc.ca/reserve/woodward_group_study", "03-20-2026", "12:00", "13:00")
-        result.extend(rooms)
+        rooms = searchForClasses(s["url"], date, start_time, "00:00", s["name"]) # type: ignore
+        result.append({"name": s["name"], "data": rooms})
 
+    print(result)
     return jsonify(result)
 
 

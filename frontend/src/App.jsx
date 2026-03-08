@@ -34,7 +34,7 @@ function App() {
 
         for (const d of data){
             console.log(d);
-            rooms_data.push(d);
+            rooms_data = rooms_data.concat(d["data"]);
         }
 
         console.log(rooms_data);

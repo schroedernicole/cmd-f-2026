@@ -8,7 +8,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import NoSuchElementException
 
 
-def searchForClasses(url, date_input, start_time, end_time):
+def searchForClasses(url, date_input, start_time, end_time, library_name):
     driver = webdriver.Chrome() # type: ignore
     driver.get(url)
 
@@ -55,7 +55,7 @@ def searchForClasses(url, date_input, start_time, end_time):
             text = room.find_element(By.TAG_NAME, "a")
 
             room_obj = {
-                "room_num": text.text,
+                "room_num": library_name + " " + text.text,
                 "booking_link": text.get_attribute("href")
             }
 
