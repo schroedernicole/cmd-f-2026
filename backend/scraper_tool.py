@@ -61,10 +61,6 @@ def searchForClasses(url, date_input, start_time, end_time):
 
             room_objs.append(room_obj)
 
-        # print("Rooms found:")
-        # print(room_objs)
-        # print("Number of rooms:", len(room_objs))
-
     driver.quit()
 
     return room_objs

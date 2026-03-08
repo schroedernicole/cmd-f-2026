@@ -1,13 +1,11 @@
 import { useState } from "react";
-import { mockRooms } from "./mockRooms";
 import { FaUsers, FaMapMarkerAlt, FaClock } from "react-icons/fa";
 import "./App.css";
-
-let rooms = [];
 
 function App() {
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
+    const [rooms, setRooms] = useState([]);
     const [searched, setSearched] = useState(false);
 
     const handleSearch = async () => {
@@ -32,16 +30,18 @@ function App() {
 
         const data = await response.json();
         console.log(data);
+        let rooms_data = [];
+
         for (const d of data){
             console.log(d);
-            rooms.push(d);
+            rooms_data.push(d);
         }
 
-        console.log(rooms);
+        console.log(rooms_data);
 
 
         // Example state update
-        // setRooms(data);
+        setRooms(rooms_data);
 
     } catch (error) {
         console.error("Request failed:", error);
@@ -90,7 +90,6 @@ function App() {
     }
 
     return (
-        <Select value={rooms} onValueChange={selectDepartment}>
         <div className="app">
 
             <header className="hero small">
@@ -145,7 +144,6 @@ function App() {
             </div>
 
         </div>
-        </Select>
     );
 }
 
