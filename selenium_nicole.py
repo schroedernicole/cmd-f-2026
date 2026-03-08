@@ -9,10 +9,9 @@ from selenium.webdriver.common.action_chains import ActionChains
 def searchWoodward():
     driver = webdriver.Chrome()
     driver.get("https://libcal.library.ubc.ca/reserve/woodward_group_study")
-    title = driver.title
 
-    driver.find_element(By.ID, "s-lc-date").send_keys("03-06-2026")
-    # driver.find_element(By.ID, "s-lc-time-start").send_keys("12:00")
+    driver.find_element(By.ID, "s-lc-date").send_keys("03-20-2026")
+    driver.find_element(By.ID, "s-lc-time-start").send_keys("12:00")
 
 
     submit_button = WebDriverWait(driver, 10).until(
@@ -35,7 +34,13 @@ def searchWoodward():
         print ("No classrooms avaliable :(")
     except:
         print("classrooms availiable!")
-       #avail_rooms = driver.find_elements(By.CLASS_NAME, "s-lc-booking-suggestion")
+        avail_rooms = driver.find_elements(By.CLASS_NAME, "s-lc-booking-suggestion")
+        room_objects = []
+        for room in avail_rooms:
+            print(room)
+        # print(room_objects)
+        
+    time.sleep(30)
         
 
 searchWoodward()
