@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { mockRooms } from "./mockRooms";
-import Header from "./components/Header";
-import FilterBar from "./components/FilterBar";
-import RoomList from "./components/RoomList";
+import { FaUsers, FaMapMarkerAlt, FaClock } from "react-icons/fa";
+import "./App.css";
 
 function App() {
     const [date, setDate] = useState("");
@@ -12,106 +11,103 @@ function App() {
     const handleSearch = () => {
         setSearched(true);
     };
+
     if (!searched) {
         return (
-            <div style={{ padding: "2rem", fontFamily: "Arial", textAlign: "center", backgroundColor: "#C8A2C8" }}>
-                <h1>UBC Study Room Finder</h1>
+            <div className="app">
 
-                <div style={{
-                    marginTop: "10rem",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    backgroundColor: "#C8A2C8",
-                    minHeight: "100vh",
-                    minWidth: "168.2vh"
-                }}>
-                    <p><b>Find available study rooms across UBC in one place.</b></p>
-                    <label>
-                        Select Date:
-                        <input
-                            type="date"
-                            value={date}
-                            onChange={(e) => setDate(e.target.value)}
-                        />
-                    </label>
+                <header className="hero">
+                    <h1>UBC Study Room Finder</h1>
+                    <p>Find available study rooms across UBC in one place.</p>
 
-                    <br /><br />
+                </header>
 
-                    <label>
-                        Select Time:
-                        <input
-                            type="time"
-                            value={time}
-                            onChange={(e) => setTime(e.target.value)}
-                        />
-                    </label>
+                <div className="search-container">
+                    <div className="search-box">
 
-                    <br /><br />
+                        <div className="input-group">
+                            <label>Select Date</label>
+                            <input
+                                type="date"
+                                value={date}
+                                onChange={(e) => setDate(e.target.value)}
+                            />
+                        </div>
 
-                    <button onClick={handleSearch}>
-                        Find Study Rooms
-                    </button>
+                        <div className="input-group">
+                            <label>Select Time</label>
+                            <input
+                                type="time"
+                                value={time}
+                                onChange={(e) => setTime(e.target.value)}
+                            />
+                        </div>
+
+                        <button onClick={handleSearch}>
+                            Find Study Rooms
+                        </button>
+
+                    </div>
                 </div>
+
             </div>
         );
     }
+
     return (
-        <div style={{
-            padding: "2rem", fontFamily: "Arial", textAlign: "center", display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            backgroundColor: "#C8A2C8",
-            minHeight: "100vh"
-        }}>
-            <h1>UBC Study Room Finder</h1>
-            <p>Find available study rooms across UBC in one place.</p>
+        <div className="app">
 
-            <div style={{
-                marginTop: "1rem",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                backgroundColor: "#C8A2C8",
-                minHeight: "100vh", 
-                minWidth: "168.2vh", 
-            }}>
+            <header className="hero small">
+                <h1>UBC Study Room Finder</h1>
+                <p>Available rooms for {date} at {time}</p>
+                <button className="back-button" onClick={() => setSearched(false)}>
+                        ← Back
+                    </button>
+            </header>
+
+            <div className="room-grid">
+
                 {mockRooms.map((room) => (
-                    <div
-                        key={room.id}
-                        style={{
-                            border: "1px solid #ddd",
-                            borderRadius: "10px",
-                            padding: "1rem",
-                            marginBottom: "1rem",
-                            minHeight: "25vh", 
-                            minWidth: "60vh"
+                    <div key={room.id} className="room-card">
 
-                        }}
-                    >
                         <h2>{room.roomName}</h2>
 
-                        <p>{room.building}</p>
-
-                        <p>Source: {room.source}</p>
-
-                        <p>Capacity: {room.capacity}</p>
-
-                        <p>
-                            Status:{" "}
-                            {room.availableNow
-                                ? "Available now"
-                                : `Next available at ${room.nextAvailableSlot}`}
+                        <p className="room-info">
+                            <FaMapMarkerAlt /> {room.building}
                         </p>
 
-                        <p>Last updated: {room.lastUpdated}</p>
+                        <p className="room-info">
+                            <FaUsers /> Capacity: {room.capacity}
+                        </p>
 
-                        <a href={room.bookingUrl} target="_blank">
+                        <p className="room-info">
+                            Source: {room.source}
+                        </p>
+
+                        <p className="room-status">
+                            {room.availableNow
+                                ? "🟢 Available now"
+                                : `🕒 Next available at ${room.nextAvailableSlot}`}
+                        </p>
+
+                        <p className="room-info">
+                            <FaClock /> Last updated: {room.lastUpdated}
+                        </p>
+
+                        <a
+                            className="booking-link"
+                            href={room.bookingUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
                             Book on official site
                         </a>
+
                     </div>
                 ))}
+
             </div>
+
         </div>
     );
 }
