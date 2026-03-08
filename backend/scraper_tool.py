@@ -6,10 +6,15 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.chrome.options import Options
+options = Options()
+options.add_argument("--headless=new")
+options.add_argument("--disable-gpu")
+options.add_argument("--window-size=1920,1080")
 
 
 def searchForClasses(url, date_input, start_time, end_time, library_name):
-    driver = webdriver.Chrome() # type: ignore
+    driver = webdriver.Chrome(options=options)
     driver.get(url)
 
     driver.find_element(By.CSS_SELECTOR, "input[type='date']").send_keys(date_input)
